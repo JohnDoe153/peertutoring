@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>ConnectionMinds - Online Learning Platform</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="ConnectionMinds - Learn Anytime, Anywhere">
+	<meta name="keywords" content="education, courses, online learning, study">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="{% static 'webuni/img/logo.png' %}" rel="shortcut icon"/>
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700" rel="stylesheet">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="{% static 'webuni/css/bootstrap.min.css'%}"/>
+	<link rel="stylesheet" href="{% static 'webuni/css/font-awesome.min.css' %}"/>
+	<link rel="stylesheet" href="{% static 'webuni/css/style.css'%}"/>
+	<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+</head>
+<body>
+	<!-- Loader -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+
+	<!-- Navbar -->
+	<nav class="navbar navbar-expand-lg bg-dark text-uppercase" id="mainNav">
+		<div class="container">
+			<a class="navbar-brand js-scroll-trigger" href="/">
+				<img src="{% static 'webuni/img/logo.png' %}" alt="Logo" style="width: 200px">
+			</a>
+			<button class="navbar-toggler navbar-toggler-right text-white" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+				Menu
+			</button>
+			<div class="collapse navbar-collapse" id="navbarResponsive">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'courses:home' %}">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/#courses">Courses</a>
+					</li>
+
+					{% if request.user.is_authenticated %}
+						{% if request.user.profile.is_teacher %}
+							<li class="nav-item"><a class="nav-link" href="{% url 'courses:create_class' %}">Create Class</a></li>
+							<li class="nav-item"><a class="nav-link" href="{% url 'courses:create_course' %}">Create Course</a></li>
+							<li class="nav-item"><a class="nav-link" href="{% url 'courses:create_lesson' %}">Create Lesson</a></li>
+						{% else %}
+							<li class="nav-item"><a class="nav-link" href="{% url 'courses:contact' %}">Contact</a></li>
+							<li class="nav-item"><a class="nav-link" href="{% url 'courses:about' %}">About</a></li>
+							<li class="nav-item"><a class="nav-link" href="{% url 'blogs:post_list' %}">Blog</a></li>
+						{% endif %}
+					{% endif %}
+
+					{% if request.user.is_authenticated %}
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">{{ request.user.username }}</a>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="{% url 'users:profile' %}">Profile</a>
+								<a class="dropdown-item" href="{% url 'account_logout' %}">Log out</a>
+							</div>
+						</li>
+					{% else %}
+						<li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Login</a></li>
+						<li class="nav-item"><a class="nav-link btn btn-primary text-white" href="{% url 'account_signup' %}">Register</a></li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	{% include 'inc/messages.html' %}
+	{% block content %}{% endblock content %}
+
+	{% if not request.user.is_authenticated %}
+	<!-- Banner -->
+	<section class="banner-section spad">
+		<div class="container">
+			<div class="section-title">
+				<h2>Join our learning community!</h2>
+				<p>Study online, watch lessons, and interact with teachers and students. Just sign up and start learning!</p>
+			</div>
+			<div class="text-center pt-4">
+				<a href="{% url 'account_signup' %}" class="btn btn-primary btn-lg">Register Now</a>
+			</div>
+		</div>
+	</section>
+	{% endif %}
+
+	<!-- Footer -->
+	<footer class="footer-section spad pb-0 bg-dark text-white">
+		<div class="footer-top">
+			<div class="footer-warp">
+				<div class="row">
+					<div class="col-lg-3">
+						<h4>Contact</h4>
+						<ul>
+							<li>London, UK</li>
+							<li>+000000000</li>
+							<li>test@test.com</li>
+						</ul>
+					</div>
+					<div class="col-lg-3">
+						<h4>Classes</h4>
+						<ul>
+							<li><a href="#">Math</a></li>
+							<li><a href="#">Literature</a></li>
+							<li><a href="#">Chemistry</a></li>
+						</ul>
+					</div>
+					<div class="col-lg-3">
+						<h4>Social Media</h4>
+						<ul>
+							<li><a href="#">YouTube</a></li>
+							<li><a href="#">Facebook</a></li>
+						</ul>
+					</div>
+					<div class="col-lg-3">
+						<h4>Newsletter</h4>
+						<form class="footer-newsletter">
+							<input type="email" placeholder="Your Email">
+							<button class="btn btn-primary">Subscribe</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer-bottom text-center">
+			<p>© ConnectionMinds <script>document.write(new Date().getFullYear());</script> All rights reserved.</p>
+		</div>
+	</footer>
+
+	<!-- Scripts -->
+	<script src="{% static 'webuni/js/jquery-3.2.1.min.js' %}"></script>
+	<script src="{% static 'webuni/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'webuni/js/main.js' %}"></script>
+	<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+	<script>AOS.init();</script>
+
+</body>
+</html>
